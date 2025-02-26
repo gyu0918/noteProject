@@ -11,6 +11,36 @@ public class Service {
         this.id = id;
     }
 
+    private void searchTool(String studyGroupName, String subjectName, String noteName, String searchId, int funchtionNum, String newString) {
+        for (StudyGroup studyGroup : studyGroupList) {
+            if (studyGroup.getStudyName().equals(studyGroupName)) {
+                List<Note> noteList = studyGroup.getNoteList();
+                for (Note note : noteList) {
+                    if (note.getId().equals(searchId)) {
+                        List<NoteContent> searchList = note.getNoteMap().get(subjectName);
+                        for (NoteContent noteContent : searchList) {
+                            if (noteContent.getTitle().equals(noteName)) {
+                                if (funchtionNum == 1){
+                                    searchList.remove(noteContent);
+                                }else if (funchtionNum == 2){
+                                    noteContent.setTitle(newString);
+                                }else if (funchtionNum == 3){
+                                    noteContent.setContent(newString);
+                                }else if (funchtionNum == 4){
+                                    System.out.println("노트 제목  = " + noteContent.getTitle());
+                                    System.out.println("노트 내용 = " + noteContent.getContent());
+                                    System.out.println("노트 날짜 = " + noteContent.getDate());
+                                    int joinCount  = noteContent.getJoinCount() + 1;
+                                    noteContent.setJoinCount(joinCount); ;
+                                }
+                                return ;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     public void addNote() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -68,22 +98,7 @@ public class Service {
                 String removeNoteName = br.readLine();
 
                 //노트 검색부분
-                for (StudyGroup studyGroup : studyGroupList) {
-                    if (studyGroup.getStudyName().equals(removeStudyGroupName)) {
-                        List<Note> noteList = studyGroup.getNoteList();
-                        for (Note note : noteList) {
-                            if (note.getId().equals(id)) {
-                                List<NoteContent> removeList = note.getNoteMap().get(removeSubjectName);
-                                for (NoteContent noteContent : removeList) {
-                                    if (noteContent.getTitle().equals(removeNoteName)) {
-                                        removeList.remove(noteContent);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                searchTool(removeStudyGroupName, removeSubjectName, removeNoteName ,id, 1, null);
 
                 break;
             case 3:
@@ -98,107 +113,54 @@ public class Service {
                     System.out.println("수정할 제목을 입력하세요.");
                     String newNoteName = br.readLine();
                     //검색해서 들어가기
-                    //노트 검색부분
-                    for (StudyGroup studyGroup : studyGroupList) {
-                        if (studyGroup.getStudyName().equals(updateStudyGroupName)) {
-                            List<Note> noteList = studyGroup.getNoteList();
-                            for (Note note : noteList) {
-                                if (note.getId().equals(id)) {
-                                    List<NoteContent> removeList = note.getNoteMap().get(updateSubjectName);
-                                    for (NoteContent noteContent : removeList) {
-                                        if (noteContent.getTitle().equals(updateNoteName)) {
-                                            noteContent.setTitle(newNoteName);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    searchTool(updateStudyGroupName, updateSubjectName, updateNoteName ,id, 2, newNoteName);
 
 
                 } else if (choiceNum == 2) {
                     System.out.println("수정할 내용을 입력하세요.");
                     String newNoteContent = br.readLine();
                     //검색해서 들어가기
-                    //노트 검색부분
-                    for (StudyGroup studyGroup : studyGroupList) {
-                        if (studyGroup.getStudyName().equals(updateStudyGroupName)) {
-                            List<Note> noteList = studyGroup.getNoteList();
-                            for (Note note : noteList) {
-                                if (note.getId().equals(id)) {
-                                    List<NoteContent> removeList = note.getNoteMap().get(updateSubjectName);
-                                    for (NoteContent noteContent : removeList) {
-                                        if (noteContent.getTitle().equals(updateNoteName)) {
-                                            noteContent.setContent(newNoteContent);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-
+                    searchTool(updateStudyGroupName, updateSubjectName, updateNoteName ,id, 3, newNoteContent);
                 }
                 break;
         }
     }
 
+
+
     public void searchNote() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.println("자신의 노트들을 찾고 싶으면 1 다른 아이디 노트들을 찾고 싶으면 2 인기글 보고 싶으면 3");
+        System.out.println("1. 제목으로 조회 2. 인기글 보기");
         int choiceNum = Integer.parseInt(br.readLine());
         if (choiceNum == 1) {
-            System.out.println("찾고 싶은 노트를 찾을려면 스터디그룹이름, 과목이름을 입력하세요.");
-            String StudyGroupName = br.readLine();
-            String SubjectName = br.readLine();
+            //여기에 조회수 부분 추가하기
+            System.out.println("찾고 싶은 스터디 이름, 아이디, 과목 을 입력하세요.");
+            String searchStudyGroupName = br.readLine();
+            String searchId = br.readLine();
+            String searchSubjectName = br.readLine();
             for (StudyGroup studyGroup : studyGroupList) {
-                if (studyGroup.getStudyName().equals(StudyGroupName)) {
+                if (studyGroup.getStudyName().equals(searchStudyGroupName)) {
                     List<Note> noteList = studyGroup.getNoteList();
                     for (Note note : noteList) {
-                        if (note.getId().equals(id)) {
-                            note.getNoteMap().get(SubjectName)
-                                    .stream().forEach(noteContent -> {
-                                        System.out.println("noteContent.getTitle() = " + noteContent.getTitle());
-                                        System.out.println("noteContent.getContent() = " + noteContent.getContent());
-                                        System.out.println("noteContent.getDate() = " + noteContent.getDate());
-                                    });
-                            break;
+                        if (note.getId().equals(searchId)) {
+                            List<NoteContent> removeList = note.getNoteMap().get(searchSubjectName);
+                            for (NoteContent noteContent : removeList) {
+                                System.out.println("제목 = " + noteContent.getTitle());
+                            }
+                            System.out.println("어떤 제목을 조회 하시겠습니가? ");
+                            String noteTitle = br.readLine();
+                            searchTool(searchStudyGroupName,searchSubjectName,noteTitle,searchId,4,null);
+                            return ;
                         }
                     }
-                    break;
                 }
             }
+
+
 
 
         } else if (choiceNum == 2) {
-            //여기에 조회수 부분 추가하기
-            System.out.println("찾고 싶은 스터디 이름, 아이디, 과목을 입력하세요.");
-            String otherStudyGroupName = br.readLine();
-            String otherId = br.readLine();
-            String otherSubjectName = br.readLine();
-            for (StudyGroup studyGroup : studyGroupList) {
-                if (studyGroup.getStudyName().equals(otherStudyGroupName)) {
-                    List<Note> noteList = studyGroup.getNoteList();
-                    for (Note note : noteList) {
-                        if (note.getId().equals(otherId)) {
-                            note.getNoteMap().get(otherSubjectName)
-                                    .stream().forEach(noteContent -> {
-                                        System.out.println("noteContent.getTitle() = " + noteContent.getTitle());
-                                        System.out.println("noteContent.getContent() = " + noteContent.getContent());
-                                        System.out.println("noteContent.getDate() = " + noteContent.getDate());
-                                    });
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-
-
-        } else if (choiceNum == 3) {
             //인기글 조회수 기준으로 5개 까지 올리기 글! treeMap으로
             TreeMap<Integer, Set<NoteContent>> rank = new TreeMap<>(Collections.reverseOrder());
             //탐색해서 조회수 int로 저장하고 거기서 treeMap에다가 객체 저장
@@ -216,25 +178,27 @@ public class Service {
             }
 
             //출력
-            int count = 0;  // 출력한 항목 수를 추적
-            for (Map.Entry<Integer, Set<NoteContent>> entry : rank.entrySet()) {
-                if (count >= 5) {
-                    break;  // 5개 출력 후 종료
-                }
+            int count = 1;  // 출력한 항목 수를 추적
+            for (Integer score : rank.keySet()) {
+                if (count > 5)
+                    break;
 
-                // entry.getKey()는 조회수, entry.getValue()는 그 조회수를 가진 NoteContent들의 Set
-                int score = entry.getKey();
-                Set<NoteContent> noteContents = entry.getValue();
+                // key(조회수)에 해당하는 값(Set<NoteContent>) 가져오기
+                Set<NoteContent> noteContents = rank.get(score);
 
-                // 각 NoteContent를 출력
-                System.out.print(" 조회수 = " + score + " 내용 = " );
+                // 제목 리스트 생성
+                List<String> titles = new ArrayList<>();
                 for (NoteContent noteContent : noteContents) {
-                    // NoteContent 안의 내용 출력 (예시로 getContent() 사용)
-                    System.out.print(",  " + noteContent.getContent());
+                    titles.add(noteContent.getTitle());
                 }
-                System.out.println();
+
+                // 출력
+                System.out.println( count +  "등  조회수 = " + score + " 제목 = " + String.join(", ", titles));
+
                 count++;
             }
+
+
         }
 
     }

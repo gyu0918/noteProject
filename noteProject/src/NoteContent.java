@@ -2,7 +2,6 @@ public class NoteContent {
     private String title;
     private String content;
     private String date;
-    //private boolean openCheck = false;
     private int joinCount = 0;
 
     public String getTitle() {
@@ -29,13 +28,6 @@ public class NoteContent {
         this.date = date;
     }
 
-//    public boolean isOpenCheck() {
-//        return openCheck;
-//    }
-//
-//    public void setOpenCheck(boolean openCheck) {
-//        this.openCheck = openCheck;
-//    }
 
     public int getJoinCount() {
         return joinCount;

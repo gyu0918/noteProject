@@ -24,7 +24,7 @@ public class OpenMenu {
                     service.addStudyGroup();
                     break ;
                 case 4:
-                    break ;
+                    return ;
             }
         }
     }
