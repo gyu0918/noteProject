@@ -1,0 +1,69 @@
+주제 : 학습 노트 만들기
+
+<db연결>
+로그인
+비밀번호
+
+class startMenu
+
+list<스터디모임>스터디모임리스트 
+
+
+while(true) 
+ 로그인 비번
+메뉴 : 1번 노트만들기        2. 노트 검색                         3. 스터디모임 만들기     4. 종료        
+           스터디모임 검색,      작성자별 검색 관련노트 서치     이름 기입 끝               
+            과목별 조회           과목별 검색 
+            추가 삭제 수정       스터디별 검색
+                                     인기글 : 
+                                      
+class 스터디모임
+스터디 이름:
+list<노트> 노트리스트
+
+class  노트
+작성자 :
+Map<과목명(String), list<노트 내용>노트내용리스트> 과목
+
+class 노트내용  
+제목
+내용
+날짜
+공개여부 : boolean 
+조회수: 
+
+
+   //studyGroupList.stream()
+                //    .filter(studyGroup -> studyGroup.getStudyName().equals(StudyGroupName)) // Find the matching study group
+                //    .findFirst() // Since you're breaking after finding the first match, we use findFirst
+                //    .ifPresent(studyGroup -> {
+                //        studyGroup.getNoteList().stream()
+                //            .filter(note -> note.getId().equals(id)) // Find the note by ID
+                //            .findFirst()
+                //            .ifPresent(note -> {
+                //                // Create the new NoteContent
+                //                NoteContent noteContent = new NoteContent();
+                //                noteContent.setTitle(NoteName);
+                //                noteContent.setContent(NoteContent);
+                //                noteContent.setDate(NoteDate);
+                //
+                //                // Put the new note content into the note's map
+                //                note.getNoteMap().computeIfAbsent(SubjectName, k -> new ArrayList<>()).add(noteContent);
+                //            });
+                //    });
+
+
+
+
+
+
+
+
+
+cf) 복습시간(2초)이 되면 자동으로 뜨는거는 멀티쓰레드 -> 중앙처리 장치 (큐로만드는것이)
+
+공부하고 요약해서 지가 복습
+
+기능
+1. 다른사람의 학습 노트 볼수 있다? 이름별로 저장 
+2.   
