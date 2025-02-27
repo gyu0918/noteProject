@@ -6,7 +6,6 @@ import java.util.*;
 public class Service {
     private List<StudyGroup> studyGroupList = new ArrayList<>();
     private String id;
-
     public Service(String id) {
         this.id = id;
     }
